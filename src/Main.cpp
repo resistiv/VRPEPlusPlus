@@ -18,7 +18,10 @@ int main(int argc, char** argv)
     // Instantiate our extractor
     Extractor ext(argv[1]);
     if (!ext.IsReady())
+    {
+        cerr << "Extractor initialization failed, aborting." << endl;
         return EXIT_FAILURE;
+    }
 
     // Extract files, check for error
     if (ext.ExtractFiles() == -1)
