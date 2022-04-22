@@ -1,16 +1,15 @@
 #include "Extractor.hpp"
-using namespace std;
 
 // Constructor
-Extractor::Extractor(string fileName)
+Extractor::Extractor(std::string fileName)
 {
     this->fileName = fileName;
 
     // Attempt file open
-    inFile.open(fileName, ios::in | ios::binary);
+    inFile.open(fileName, std::ios::in | std::ios::binary);
     if (!inFile.is_open())
     {
-        cerr << "Could not open file \"" << fileName << "\" for reading, aborting." << endl;
+        std::cerr << "Could not open file \"" << fileName << "\" for reading, aborting." << std::endl;
         return;
     }
 
@@ -19,7 +18,7 @@ Extractor::Extractor(string fileName)
     GetFullPathName(fileName.c_str(), MAX_PATH, fullPath, nullptr);
 
     // Append output signifier
-    outputDir = string(fullPath) + "_out";
+    outputDir = std::string(fullPath) + "_out";
 
     // Create main output dir
     if (CreateDir(outputDir) == -1)
@@ -39,12 +38,12 @@ int Extractor::ExtractFiles()
     for (int i = 0; i < fileCount; i++)
     {
         char nameBuf;
-        string outFileName = "";
-        string outSubDir = "";
+        std::string outFileName = "";
+        std::string outSubDir = "";
         int fileLength;
 
         // Seek to file offset
-        inFile.seekg(fileIndexes[i], ios_base::beg);
+        inFile.seekg(fileIndexes[i], std::ios_base::beg);
 
         // Read file name (null-terminated, null-padded to next four byte border)
         inFile.read(&nameBuf, sizeof(nameBuf));
@@ -60,26 +59,26 @@ int Extractor::ExtractFiles()
         // Create all needed subdirectories
         if (CreateSubDirs(outputDir, outFileName) == -1)
         {
-            cerr << "Failed to generate sub-directories for file \"" << outFileName << "\", aborting." << endl;
+            std::cerr << "Failed to generate sub-directories for file \"" << outFileName << "\", aborting." << std::endl;
             return -1;
         }
 
         // Skip to next four-byte border
-        inFile.seekg(3 - (outFileName.size() % 4), ios_base::cur);
+        inFile.seekg(3 - (outFileName.size() % 4), std::ios_base::cur);
 
         // Read file length
         inFile.read((char *)&fileLength, sizeof(fileLength));
 
         // Initialize output file
-        ofstream outFile(outputDir + "\\" + outFileName, ios::out | ios::binary);
+        std::ofstream outFile(outputDir + "\\" + outFileName, std::ios::out | std::ios::binary);
         if (!outFile.is_open())
         {
-            cerr << "Could not open file \"" << outputDir + "\\" + outFileName << "\" for writing, aborting." << endl;
+            std::cerr << "Could not open file \"" << outputDir + "\\" + outFileName << "\" for writing, aborting." << std::endl;
             return -1;
         }
 
         // Output file info
-        cout << std::hex << "[" << outFileName << "] Offset: 0x" << fileIndexes[i] << " | Length: 0x" << fileLength << std::dec << endl;
+        std::cout << std::hex << "[" << outFileName << "] Offset: 0x" << fileIndexes[i] << " | Length: 0x" << fileLength << std::dec << std::endl;
 
         // Read file
         int bytesLeft = fileLength;
@@ -122,23 +121,23 @@ void Extractor::ReadTOC()
 }
 
 // Creates a directory; returns -1 if the creation failed
-int Extractor::CreateDir(string directory)
+int Extractor::CreateDir(std::string directory)
 {
     // Create directory
     if (!CreateDirectory(directory.c_str(), NULL) && GetLastError() != ERROR_ALREADY_EXISTS)
     {
-        cerr << "Failed to create output directory with path \"" << directory << "\", aborting." << endl;
+        std::cerr << "Failed to create output directory with path \"" << directory << "\", aborting." << std::endl;
         return -1;
     }
     return 0;
 }
 
 // Generates all the needed sub-directories for a nested file
-int Extractor::CreateSubDirs(string topDir, string workingList)
+int Extractor::CreateSubDirs(std::string topDir, std::string workingList)
 {
     // Find dir delimiter
     unsigned int slashIndex = workingList.find("\\");
-    if (slashIndex == string::npos)
+    if (slashIndex == std::string::npos)
         return 0;
 
     // Update strings
@@ -150,6 +149,8 @@ int Extractor::CreateSubDirs(string topDir, string workingList)
         return -1;
 
     CreateSubDirs(topDir, workingList);
+
+    return 0;
 }
 
 bool Extractor::IsReady() const

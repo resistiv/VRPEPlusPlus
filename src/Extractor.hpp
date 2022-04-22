@@ -1,6 +1,5 @@
 #ifndef EXTRACTOR_H
 #define EXTRACTOR_H
-using namespace std;
 
 #include <algorithm>
 #include <fstream>
@@ -13,19 +12,19 @@ using namespace std;
 class Extractor
 {
     public:
-        Extractor(string fileName);
+        Extractor(std::string fileName);
         int ExtractFiles();
         bool IsReady() const;
     private:
         void ReadTOC();
-        int CreateDir(string directory);
-        int CreateSubDirs(string topDir, string workingList);
+        int CreateDir(std::string directory);
+        int CreateSubDirs(std::string topDir, std::string workingList);
         bool isReady = false;
-        string fileName;
-        ifstream inFile;
+        std::string fileName;
+        std::ifstream inFile;
         int fileCount;
-        vector<int> fileIndexes;
-        string outputDir;
+        std::vector<int> fileIndexes;
+        std::string outputDir;
         char outBuf[BUFF_SIZE];
 };
 

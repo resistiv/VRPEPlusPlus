@@ -2,14 +2,13 @@
 #include <fstream>
 #include "Extractor.hpp"
 #include "Globals.hpp"
-using namespace std;
 
 // Prototypes
 int WriteUsage();
 
 int main(int argc, char** argv)
 {
-    cout << "VRPE++ v" << VERSION << " by Kaitlyn NeSmith" << endl;
+    std::cout << "VRPE++ v" << VERSION << " by Kaitlyn NeSmith" << std::endl;
 
     // Test args
     if (argc != 2)
@@ -19,18 +18,18 @@ int main(int argc, char** argv)
     Extractor ext(argv[1]);
     if (!ext.IsReady())
     {
-        cerr << "Extractor initialization failed, aborting." << endl;
+        std::cerr << "Extractor initialization failed, aborting." << std::endl;
         return EXIT_FAILURE;
     }
 
     // Extract files, check for error
     if (ext.ExtractFiles() == -1)
     {
-        cerr << "Extraction failed, aborting." << endl;
+        std::cerr << "Extraction failed, aborting." << std::endl;
         return EXIT_FAILURE;
     }
 
-    cout << "Done." << endl;
+    std::cout << "Done." << std::endl;
 
     return EXIT_SUCCESS;
 }
@@ -38,6 +37,6 @@ int main(int argc, char** argv)
 // Writes usage to output
 int WriteUsage()
 {
-    cout << "Usage: VRPE" << USAGE << endl;
+    std::cout << "Usage: VRPE" << USAGE << std::endl;
     return EXIT_FAILURE;
 }
