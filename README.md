@@ -1,3 +1,7 @@
+This tool is outdated!
+======================
+**Please use [VibRipper](https://github.com/resistiv/VibRipper) or [KNFE](https://github.com/resistiv/KNFE) instead!**
+
 VRPE++
 ======
 VRPE++ is a lightweight port of [VibRibbonPakExtractor](https://github.com/resistiv/VibRibbonPakExtractor) to C++, created to familiarize myself with the language in preparation for my CS 101 course.
